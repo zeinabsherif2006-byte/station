@@ -57,6 +57,14 @@
         .time-box:hover { border-color: var(--main-cyan); transform: translateY(-5px); }
         .time-box span { font-size: 22px; color: var(--main-cyan); display: block; font-weight: bold; }
         
+        .music-btn {
+            background: rgba(28, 28, 30, 0.9); color: var(--main-pink); border: 2px solid var(--main-pink);
+            padding: 12px 25px; border-radius: 30px; font-size: 16px; font-weight: bold; cursor: pointer;
+            margin: 20px auto; display: inline-flex; align-items: center; gap: 10px; transition: 0.3s;
+            box-shadow: 0 0 15px rgba(255, 179, 193, 0.2);
+        }
+        .music-btn:hover { transform: scale(1.05); background: var(--main-pink); color: #000; box-shadow: 0 0 20px rgba(255, 179, 193, 0.4); }
+
         .cards-list { display: flex; flex-direction: column; align-items: center; gap: 60px; margin-top: 50px; perspective: 1000px; }
         .card { width: 340px; height: 460px; cursor: pointer; border-radius: 20px; transition: 0.5s; }
         .card:hover { transform: translateY(-15px) scale(1.02); filter: drop-shadow(0 0 15px rgba(255,179,193,0.4)); }
@@ -85,7 +93,6 @@
         
         #flash-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; opacity: 0; pointer-events: none; z-index: 1000; transition: 0.5s; }
         
-        /* تأثير كلمة الختام المنورة */
         #exit-msg { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--main-pink); font-size: 32px; text-align: center; z-index: 10000; display: none; text-shadow: 0 0 20px var(--main-pink); font-weight: bold; line-height: 1.6; }
     </style>
 </head>
@@ -111,7 +118,7 @@
 
     <div id="rock-screen" class="section">
         <div id="fire-rock" class="rock" onclick="hitRock()">100</div>
-        <p style="margin-top:20px; color:#ffb3c1;">اكسر الصخرة عشان تدخل المحطة يا عبودي! 🔥</p>
+        <p id="rock-instruction" style="margin-top:20px; color:#ffb3c1;">اكسر الصخرة عشان تدخل المحطة يا عبودي! 🔥</p>
     </div>
 
     <div id="main-content" class="section">
@@ -128,19 +135,23 @@
             </div>
             <p style="color: #ccc; font-style: italic; margin-top: -10px;">وكل ثانية فيهم ليها ذكرى يا عبودي ✨</p>
 
+            <button id="toggle-music-btn" class="music-btn" onclick="toggleMusic()">
+                <span>🎵 تشغيل الموسيقى للمحطة 😉❤️</span>
+            </button>
+
             <div class="cards-list">
                 <div class="card" id="first-card" onclick="flipCard(this, '#ffb3c1')"><div class="card-inner"><div class="card-front">أول الحكاية.. وأجملها 🤍</div><div class="card-back" style="background-color: #ffb3c1;">"الاستريك ده مش مجرد رقم بيزيد يا عبدو، دي أيام وساعات قضيتها بتكلم معك وبحس فيها إنك أقرب حد ليا. الاستريك ده هو سجل يومي لوجودك في حياتي، كل يوم بيزيد بيفكرني إنك مش مجرد حد عابر، إنت بقيت ركن أساسي في يومي ويا رب الاستريك ده يكمل معانا سنين مش بس أيام. ❤️"</div></div></div>
                 <img src="WhatsApp Image 2026-05-10 at 1.56.33 AM.jpeg" class="flow-img">
 
-                <div class="card" onclick="flipCard(this, '#a2d2ff')"><div class="card-inner"><div class="card-front">مبتتنسيش يصحبي ❤️</div><div class="card-back" style="background-color: #a2d2ff;">"فاكر لما قلتلي إني عملت معاك حركات جدعة وعمرك ما هتساها؟ أنا عايزة أقولك إن جدعتني معاك دي أقل حاجة تستاهلها، وإني عمري ما هنسى إنك بتعتز بيا وبالثقة دي. إنت كمان بمواقفك أثبتّ لي إنك السند اللي بجد، والجدعنة اللي شوفتها منك خلتني أتأكد إن ثقتي فيك كانت في محلها. بجد ممتنة لوجودك اللي بيخليني دايماً مطمنة وعارفة إن ليا حد حقيقي أتسند عليه. ✨"</div></div></div>
+                <div class="card" onclick="flipCard(this, '#a2d2ff')"><div class="card-inner"><div class="card-front">مبتتنسيش يصحبي ❤️</div><div class="card-back" style="background-color: #a2d2ff;">"فاكر لما قلتلي إني عملت معاك حركات جدعة وعمرك ما هتساها? أنا عايزة أقولك إن جدعتني معاك دي أقل حاجة تستاهلها، وإني عمري ما هنسى إنك بتعتز بيا وبالثقة دي. إنت كمان بمواقفك أثبتّ لي إنك السند اللي بجد، والجدعنة اللي شوفتها منك خلتني أتأكد إن ثقتي فيك كانت في محلها. بجد ممتنة لوجودك اللي بيخليني دايماً مطمنة وعارفة إن ليا حد حقيقي أتسند عليه. ✨"</div></div></div>
                 <img src="WhatsApp Image 2026-05-10 at 1.54.03 AM (4).jpeg" class="flow-img">
 
                 <div style="color: var(--main-pink); font-weight: bold; font-size: 20px;">لسه في كلام مستخبي يا عبودي.. ❤️</div>
 
-                <div class="card" onclick="flipCard(this, '#cdb4db')"><div class="card-inner"><div class="card-front">عِشرة متهونش.. 🤝</div><div class="card-back" style="background-color: #cdb4db;">"إنت قلت (مش عايز أخسرك).. وأنا بقولك إن المحطة دي اتعملت عشان نفضل دايماً قريبين. الخناقات دي 'سحابة صيف' وهتعدي، والمهم إننا نفضل سند لبعض. وزي ما بيقولوا 'الصحابة أصول'، وأنا أصولي وعِشرتي معاك متهونش عليا أبداً بسبب زعل تافه. إنت صاحب جدع وليك مكانة مختلفة، ومهم عندي نفضل في ضهر بعض دايماً.. إحنا ما بينا مواقف تخلينا نعدي أي زعل وإحنا بنضحك، والجدع اللي زيك في الزمن ده ميتعوضش ولا يتفَرط في معرفته بسهولة."</div></div></div>
+                <div class="card" onclick="flipCard(this, '#cdb4db')"><div class="card-inner"><div class="card-front">عِشرة متهونش.. 🤝</div><div class="card-back" style="background-color: #cdb4db;">"إنت قلت (مش عايز أخسرك).. وأنا بقولك إن المحطة دي اتعملت عشان نفضل دايماً قريبين. الخناقات دي 'سحابة صيف' وهتعدي، والمهم إننا نفضل سند لبعض. وزي ما بيقولوا 'الصحابة أصول woods woods'، وأنا أصولي وعِشرتي معاك متهونش عليا أبداً بسبب زعل تافه. إنت صاحب جدع وليك مكانة مختلفة، ومهم عندي نفضل في ضهر بعض دايماً.. إحنا ما بينا مواقف تخلينا نعدي أي زعل وإحنا بنضحك، والجدع اللي زيك في الزمن ده ميتعوضش ولا يتفَرط في معرفته بسهولة."</div></div></div>
                 <img src="WhatsApp Image 2026-05-10 at 1.54.02 AM (1).jpeg" class="flow-img">
 
-                <div class="card" onclick="flipCard(this, '#caffbf')"><div class="card-inner"><div class="card-front">كلمة ليها معنى.. ❤️</div><div class="card-back" style="background-color: #caffbf;">"بما إني أختك المفضلة زي ما بتقول، فمن حق الأخت إنها تطمن على أخوها.. اطمن يا عبدالرحمن مكانتك عندي متهزتش، والجدعنة اللي شوفتها مني زمان لسه موجودة وهتزيد. وعايزاك تعرف إن الأخوات مبيقفوش لبعض على كلمة، والشدة هي اللي بتبين الأصل؛ وأنا أصلي دايماً هيخليني في ضهرك وسند ليك في أي وقت. إنت مش بس صاحب، إنت أخ غالي ومكانه محمي مهما الدنيا خدتنا أو جابتنا."</div></div></div>
+                <div class="card" onclick="flipCard(this, '#caffbf')"><div class="card-inner"><div class="card-front">كلمة ليها معنى.. ❤️</div><div class="card-back" style="background-color: #caffbf;">"بما إني أختك المفضلة زي ما بتقول، فمن حق الأخت إنها تطمن على أخوها.. اطمن يا عبدالرحمن مكانتك عندي متهزتش، والجدعنة اللي شوفتها مني زمان لسه موجودة وهتزيد. وعايزاك تعرف إن الأخوات مبيقفوش لبعض على كلمة، والشدة هي اللي بتبين الأصل؛ وأنا أصلي دايماً هيخليني في ضهركسند ليك في أي وقت. إنت مش بس صاحب، إنت أخ غالي ومكانه محمي مهما الدنيا خدتنا أو جابتنا."</div></div></div>
                 <img src="WhatsApp Image 2026-05-10 at 1.54.03 AM (3).jpeg" class="flow-img">
 
                 <div class="card" onclick="flipCard(this, '#ffd1b3')"><div class="card-inner"><div class="card-front">رسالة لقلبك.. اطمن ❤️</div><div class="card-back" style="background-color: #ffd1b3;">"عايزاك تشيل فكرة الغدر أو إني أكرفلك من دماغك خالص، أنا لا طبعي الغدر ولا بعرف أبيع حد شالني في عينه. اطمن يا عبدالرحمن، إنت أخويا ومكانتك في قلبي متصانة. وأنا كلمتي واحدة ومبغيرهاش، واللي بينا عِشرة وسنين مش محطة وهتعدي.. فريح بالك خالص لأن مكانتك عندي ثابتة مهما حصل."</div></div></div>
@@ -152,10 +163,10 @@
                 <div class="card" onclick="flipCard(this, '#f94144')"><div class="card-inner"><div class="card-front">مساء الاستفزاز.. 😂❤️</div><div class="card-back" style="background-color: #f94144; color: #fff;">"بما إننا مابنعرفش نقعد دقيقتين من غير ما نطلع عين بعض، فكان لازم أقولك إنك أرخم وأبرد وأكتر حد مستفز عرفته في حياتي.. بس للأمانة برضه، أنا كمان مستفزة 😔😂، والاتنين لما بيجمعوا بيعملوا أحلى ضحكة في الدنيا. يا رب تفضل رخم وبارد كده وتفضل ضحكتنا المستفزة دي مالية يومنا، لأن من غير مناقرتنا سوا اليوم بيبقى ملوش طعم. ربنا يديمك يا أخويا يا أرخم حد في المجرة، وع كلامك دا المطلوب إثباته 😂❤️."</div></div></div>
                 <img src="WhatsApp Image 2026-05-10 at 1.54.03 AM (7).jpeg" class="flow-img">
 
-                <div class="card" onclick="flipCard(this, '#f9c74f')"><div class="card-inner"><div class="card-front">ركنك البعيد الهادي.. 🏠💙</div><div class="card-back" style="background-color: #f9c74f;">"وقت الشدة الحقيقي هو لما تضيق بيك الدنيا وتفتكر إنك لوحدك، بس أنا هنا عشان أثبتلك العكس. عارفة إن الثقة بتبنيها الأفعال مش الكلام، وعارفة إن ممكن نمر بمحطات تهز اللي بينا، بس عهدي ليك كأختك الكبيرة إنك هتلاقيني الحيطة اللي بتسند عليها والضهر اللي مبيخذلكش مهما حصل. متهمنيش الظروف، المهم إنك تتأكد إن مكاني جنبك ثابت ومبيتغيرش، وهفضل دايماً السند اللي يحميك والأمان اللي ترجعله وأنت مطمن إنك في إيد أمينة. أنا جنبك يا عبدو، وهثبتلك إن اللي بينا أقوى من أي اهتزاز."</div></div></div>
+                <div class="card" onclick="flipCard(this, '#f9c74f')"><div class="card-inner"><div class="card-front">ركنك البعيد الهادي.. 🏠💙</div><div class="card-back" style="background-color: #f9c74f;">"وقت الشدة الحقيقي هو لما تضيق بيك الدنيا وتفتكر إنك لوحدك، بس أنا هنا عشان أثبتلك العكس. عارفة إن الثقة بتبنيها الأفعال مش الكلام, وعارفة إن ممكن نمر بمحطات تهز اللي بينا، بس عهدي ليك كأختك الكبيرة إنك هتلاقيني الحيطة اللي بتسند عليها والضهر اللي مبيخذلكش مهما حصل. متهمنيش الظروف، المهم إنك تتأكد إن مكاني جنبك ثابت ومبيتغيرش، وهفضل دايماً السند اللي يحميك والأمان اللي ترجعله وأنت مطمن إنك في إيد أمينة. أنا جنبك يا عبدو، وهثبتلك إن اللي بينا أقوى من أي اهتزاز."</div></div></div>
                 <img src="WhatsApp Image 2026-05-10 at 1.54.03 AM (8).jpeg" class="flow-img">
 
-                <div class="card" onclick="flipCard(this, '#90be6d')"><div class="card-inner"><div class="card-front">لسه في نص الخيط.. 🧵✨</div><div class="card-back" style="background-color: #90be6d;">"الثقة مبيتحكيش عنها، الثقة بتبان في المواقف، وأنا أفعالي هي اللي هتثبتلك إني الضهر اللي مبيخذلكش مهما حصل. وزي ما أنا واثقة في اللي بقدمه، الأمان اللي بينا هيرجع لمكانه الطبيعي لما نقدر قيمة اللي بينا بجد. إحنا أكبر من أي محطة عطلتنا، والوقت كفيل يبين إن اللي بينا حقيقي وميتهزش. أنا عارفة مكاني وقيمتي عندك يا عبدو وعارفة إن مكانتك في حياتي غالية، وباقية على اللي بينا طول ما التقدير متبادل والأمان بينا ملوش حدود."</div></div></div>
+                <div class="card" onclick="flipCard(this, '#90be6d')"><div class="card-inner"><div class="card-front">لسه في نص الخيط.. 🧵✨</div><div class="card-back" style="background-color: #90be6d;">"الثقة مبيتحكيش عنها، الثقة بتبان in in المواقف، وأنا أفعالي هي اللي هتثبتلك إني الضهر اللي مبيخذلكش مهما حصل. وزي ما أنا واثقة في اللي بقدمه، الأمان اللي بينا هيرجع لمكانه الطبيعي لما نقدر قيمة اللي بينا بجد. إحنا أكبر من أي محطة عطلتنا، والالوقت كفيل يبين إن اللي بينا حقيقي وميتهزش. أنا عارفة مكاني وقيمتي عندك يا عبدو وعارفة إن مكانتك في حياتي غالية، وباقية على اللي بينا طول ما التقدير متبادل والأمان بينا ملوش حدود."</div></div></div>
                 <img src="WhatsApp Image 2026-05-10 at 1.54.03 AM (9).jpeg" class="flow-img">
 
                 <div class="card" onclick="flipCard(this, '#43aa8b')"><div class="card-inner"><div class="card-front">ولا حاجة.. 🙂😂</div><div class="card-back" style="background-color: #43aa8b; color: #fff;">"عارفة إني ساعات بكون 'تقيلة' في طبعي، وبستفزك لحد ما عصبيتك تطلع، وعارفة إن طبعي مش سهل وممكن يخليك تضيق مني.. بس خليك واثق إن كل ده من عشمي فيك. نصايحك ليّ وكلامك بيفضلوا محفورين في عقلي، وبيفرقوا في حياتي أكتر مما تتخيل، حتى لو مش ببين ده وقتها. عشان كدة، حقك عليّ وأنا آسفة على كل حاجة ضايقتك، وعارفة إن دماغي ساعات بتصغر وبكون مستفزة بجد.. فخليك أنت دايمًا الشخص اللي بيفهمني ويعديلي وما بيوقفليش على الواحدة. إحنا أخوات وأصحاب، والجدعنة اللي بينا أكبر من أي 'قفشة' أو دماغ ناشفة."</div></div></div>
@@ -172,7 +183,6 @@
             <button id="show-msg-btn" class="final-btn" onclick="revealHappyMessage()">استنى بس.. خش برجلك اليمين يا عبودي 😉📖❤️</button>
             <div id="happy-message"></div>
             
-            <!-- إضافة الزرار الأخير هنا -->
             <div id="end-action" style="display:none; text-align: center; margin-top: 40px;">
                 <button class="final-btn" style="background: linear-gradient(45deg, #1a1a1a, #444); color: var(--main-pink); border: 2px solid var(--main-pink);" onclick="finishTheJourney()">ختم المحطة.. دمت لي سنداً يا بطل 🌎🤝</button>
             </div>
@@ -180,8 +190,124 @@
     </div>
 
     <script>
-        const loginMessages = ["متنساش تخش برجلك اليمين يا عبودي 😂", "المحطة نورت بيك يا عبودي 😌", "ركز في الباسورد يا عبودي 👀", "المحطة اشتاقت ليك يا عبودي ✨"];
+        const loginMessages = [
+            "متنساش تخش برجلك اليمين يا عبودي 😂", 
+            "المحطة نورت بيك يا عبودي 😌", 
+            "ركز في الباسورد يا عبودي 👀", 
+            "المحطة اشتاقت ليك يا عبودي ✨",
+            "يا هلا بيك في محطة ذكرياتنا يا بطل 🔥",
+            "مستني إيه؟ الباسورد محتاج تركيز يا عبادي 😂❤️",
+            "جاهز تفتكر كل اللي فات؟ المحطة مستنياك 😉"
+        ];
         document.getElementById('random-login-msg').innerText = loginMessages[Math.floor(Math.random() * loginMessages.length)];
+
+        let audioCtx = null;
+        let ambientOsc = null;
+        let ambientGain = null;
+        let emotionalGain = null;
+
+        function initCinematicAudio() {
+            if (audioCtx) return;
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            
+            ambientGain = audioCtx.createGain();
+            ambientGain.gain.setValueAtTime(0.02, audioCtx.currentTime); 
+            
+            let filter = audioCtx.createBiquadFilter();
+            filter.type = "lowpass";
+            filter.frequency.setValueAtTime(350, audioCtx.currentTime);
+
+            ambientOsc = audioCtx.createOscillator();
+            ambientOsc.type = "sine";
+            ambientOsc.frequency.setValueAtTime(65, audioCtx.currentTime); 
+            
+            ambientOsc.connect(filter);
+            filter.connect(ambientGain);
+            ambientGain.connect(audioCtx.destination);
+            ambientOsc.start();
+
+            emotionalGain = audioCtx.createGain();
+            emotionalGain.gain.setValueAtTime(0.015, audioCtx.currentTime);
+            
+            let osc2 = audioCtx.createOscillator();
+            osc2.type = "triangle";
+            osc2.frequency.setValueAtTime(115, audioCtx.currentTime);
+            
+            let filter2 = audioCtx.createBiquadFilter();
+            filter2.type = "lowpass";
+            filter2.frequency.setValueAtTime(160, audioCtx.currentTime);
+            
+            osc2.connect(filter2);
+            filter2.connect(emotionalGain);
+            emotionalGain.connect(audioCtx.destination);
+            osc2.start();
+        }
+
+        // تم تعلية صوت الكيبورد ليكون مسموعاً وواضحاً تماماً (تم رفعه من 0.003 إلى 0.05)
+        function playSoftTick() {
+            if (!audioCtx) return;
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(1000, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime); 
+            gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.04);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.04);
+        }
+
+        // تم تعلية تأثير الـ Whoosh السينمائي (تم رفعه من 0.15 إلى 0.85)
+        function playCinematicWhoosh() {
+            if (!audioCtx) return;
+            document.getElementById('sfx-whoosh').volume = 0.85;
+            document.getElementById('sfx-whoosh').play().catch(() => {});
+            
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+            osc.type = "triangle";
+            osc.frequency.setValueAtTime(90, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.5);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.5);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.5);
+        }
+
+        function playSparkleChime() {
+            if (!audioCtx) return;
+            let now = audioCtx.currentTime;
+            [880, 1320, 1760, 2640].forEach((freq, idx) => {
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.type = "sine";
+                osc.frequency.setValueAtTime(freq, now + idx * 0.05);
+                gain.gain.setValueAtTime(0.03, now + idx * 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.00001, now + idx * 0.05 + 0.4);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now + idx * 0.05);
+                osc.stop(now + idx * 0.05 + 0.4);
+            });
+        }
+
+        // تم تعلية ضربة الصخرة لتكون قوية ومؤثرة (تم رفعها من 0.06 إلى 0.45)
+        function playSoftThud() {
+            if (!audioCtx) return;
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+            osc.type = "triangle";
+            osc.frequency.setValueAtTime(95, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.45, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.2);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.2);
+        }
 
         function createStars() { 
             const container = document.getElementById('stars-container'); 
@@ -199,6 +325,11 @@
         createStars();
 
         function checkPassword() { 
+            initCinematicAudio(); 
+            // تم رفع صوت كليك الزراير لأعلى درجة واضحة (1.0)
+            document.getElementById('sfx-click').volume = 1.0;
+            document.getElementById('sfx-click').play().catch(() => {});
+            
             const input = document.getElementById('pass-input').value; 
             if (input === '100') { 
                 document.getElementById('flash-overlay').style.opacity = "0.3";
@@ -211,18 +342,40 @@
                     rockScreen.style.display = 'block';
                     setTimeout(() => rockScreen.style.opacity = "1", 50);
                 }, 800);
-                document.getElementById('bg-music').play().catch(e => console.log("Music blocked")); 
             } else { alert('الباسورد غلط.. ركز يا عبودي 😂😂❤️'); } 
         }
+
+        const rockMessages = [
+            "اكسر الصخرة عشان تدخل المحطة يا عبودي! 🔥",
+            "عاش يا وحش.. كمل ضرب! 💪",
+            "بدأت تتكسر أهي.. ركز شوية 😂",
+            "أيوة كدة.. المحطة قربت تفتح!",
+            "جامد يا عبودي.. لسه فاضل تكة!",
+            "اكسر يا بطل.. ماباقيش كتير 🔨",
+            "هانت خلاص.. آخر كام ضربة!",
+            "يا ربي ع القوة.. خلاص الصخرة بتنهار 🔥",
+            "أخر ضربة دي.. أديهاااا 🚀",
+            "مبروك! المحطة انفتحت ليك يا عبادي ❤️"
+        ];
 
         let hits = 0;
         function hitRock() {
             hits++;
+            initCinematicAudio();
+            playSoftThud(); 
+            
             const rock = document.getElementById('fire-rock');
             const body = document.body;
+            const rockText = document.getElementById('rock-instruction');
+            
+            if (hits < rockMessages.length) {
+                rockText.innerText = rockMessages[hits];
+            }
+
             body.classList.add('shake-active');
             setTimeout(() => body.classList.remove('shake-active'), 200);
             rock.style.boxShadow = `0 0 ${20 + hits * 10}px #ff4500`;
+            
             if (hits >= 10) {
                 document.getElementById('flash-overlay').style.opacity = "1";
                 document.getElementById('loading-msg').style.display = "block";
@@ -235,6 +388,8 @@
                     const mainContent = document.getElementById('main-content');
                     mainContent.style.display = 'block';
                     setTimeout(() => mainContent.style.opacity = "1", 50);
+                    
+                    playSparkleChime();
                     confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 }, colors: ['#ff4500', '#ffa500', '#fff'] });
                     startSequence();
                 }, 1500);
@@ -242,10 +397,13 @@
         }
 
         function flipCard(cardElement, color) {
-            document.getElementById('sfx-flip').play(); 
+            // تم رفع صوت قلب الكروت لأعلى درجة مسموعة بوضوح (1.0)
+            document.getElementById('sfx-flip').volume = 1.0;
+            document.getElementById('sfx-flip').play().catch(() => {}); 
             cardElement.classList.toggle('flipped');
             const glow = document.getElementById('bg-glow');
             if (cardElement.classList.contains('flipped')) {
+                playSoftTick();
                 confetti({ particleCount: 20, spread: 50, origin: { y: 0.8 }, colors: [color] });
                 glow.style.background = color;
                 glow.style.opacity = "0.4";
@@ -260,12 +418,14 @@
         }
 
         function startSequence() {
-            const messages = ["نورت محطة ذكرياتنا يا عبودي.. ✨", "الأيام بتعدي بسرعة.. ❤️", "بس في وسط السرعة دي، كان لازم نوقف الزمن لحظة..", "عارف ليه يا عبودي؟", "عشان في حاجات مينفعش تعدي كدة وخلاص..", "إنت كنت بتقول خايف تخسرني..", "بس اللي هتشوفه جوه هيعرفك إنك محفور هنا يا عبودي.. 🧠", "الأمان مش كلمة بتتقال، الأمان موقف وأصل ثابت.. 🤝", "خد نفس طويل يا عبودي.. ويلا نبدأ حكايتنا.."];
+            const messages = ["نورت محطة ذكرياتنا يا عبودي.. ✨", "الأيام بتعدي بسرعة.. ❤️", "بس في وسط السرعة دي، كان لازم نوقف الزمن لحظة..", "عارف ليه يا عبودي? ", "عشان في حاجات مينفعش تعدي كدة وخلاص..", "إنت كنت بتقول خايف تخسرني..", "بس اللي هتشوفه جوه هيعرفك إنك محفور هنا يا عبودي.. 🧠", "الأمان مش كلمة بتتقال، الأمان موقف وأصل ثابت.. 🤝", "خد نفس طويل يا عبودي.. ويلا نبدأ حكايتنا.."];
             let i = 0;
             const textElement = document.getElementById('dynamic-text');
             function showNext() {
                 if (i < messages.length) {
-                    document.getElementById('sfx-whoosh').play(); 
+                    playCinematicWhoosh(); 
+                    if (i === 0 || i === 6 || i === 7) playSparkleChime(); 
+                    
                     textElement.style.opacity = 0;
                     setTimeout(() => { 
                         textElement.innerText = messages[i]; 
@@ -278,6 +438,7 @@
                     setTimeout(() => { 
                         textElement.style.display = 'none'; 
                         document.getElementById('final-stage').style.display = 'block'; 
+                        playCinematicWhoosh(); 
                         startTimer(); 
                         setTimeout(() => flipCard(document.getElementById('first-card'), '#ffb3c1'), 1000);
                     }, 1000);
@@ -300,18 +461,48 @@
             }, 1000); 
         }
 
-        const happyText = `صحبي يصحبي 😍😂♥ خد نفس طويل ويلا اقراء يا عبودي 😂♥ <br><br> عارف، في ناس بتدخل حياتنا بنعتبرهم مجرد أرقام، وفي ناس تانية زيك بيبقوا هما "المحطة" اللي بنرتاح فيها. أنا عايزة أقولك إنك مش بس أخويا الصغير، إنت الشخص اللي بجد برتاح جداً وأنا بتكلم معاه، وبحس إن كلامنا سوا بيفصلني عن تعب الدنيا كله. <br><br> خوفك من إني أغدر بيك أو "أكرفلك" ده وجعني، لأني أبعد ما يكون عن كدة. أنا لما بختار حد وأقول عليه "أخويا"، بيبقى وعد مني إني أكون سند وأمان ليه مهما حصل. الغدر مش طبعي، والجدعنة اللي شوفتها مني دي أصلي، وعمري ما هغير أصلي مع حد شالني في عينه زيك. <br><br> عايزة أقولك كمان إني مش ناسية أبداً خوفك عليا، ولا حنيتك اللي بتبان في أبسط التفاصيل.. أو لما بكون مضايقة هو اللي خلاني أحس بجد إن عندي أخ حقيقي قلبه عليا. حنيتك دي غالية عندي أوي، وهي اللي بتخليني متمسكة بيك أكتر وأكتر. <br><br> اطمن يا بطل.. مكانتك عندي محصنة، لا خناقة بتهزها ولا سوء تفاهم بيمحيها. إنت أخويا المفضل، والاستريك اللي بينا ده مش أيام بتعدي، دي مودة بتكبر. خليك واثق إن أختك الكبيرة دايماً في ظهرك، وعمرها ما هنمشي وتفرط في حد غالي زيك. <br><br> شكراً إنك في حياتي، وشكراً على كل مرة ريحت قلبي فيها بكلامك وخوفك عليا. إحنا مكملين، ومحطة ذكرياتنا لسه مليانة حكاوي حلوة جاية.. يديمك ليا يا عبودي ❤️🌎✨`;
+        function toggleMusic() {
+            document.getElementById('sfx-click').volume = 1.0;
+            document.getElementById('sfx-click').play().catch(() => {});
+            
+            const music = document.getElementById('bg-music');
+            const btn = document.getElementById('toggle-music-btn');
+            
+            if (music.paused) {
+                music.play().catch(e => console.log("Music error: ", e));
+                btn.innerHTML = "⏸️ إيقاف الموسيقى المؤقت";
+                btn.style.borderColor = "var(--main-cyan)";
+                btn.style.color = "var(--main-cyan)";
+            } else {
+                music.pause();
+                btn.innerHTML = "🎵 تشغيل الموسيقى للمحطة 😉❤️";
+                btn.style.borderColor = "var(--main-pink)";
+                btn.style.color = "var(--main-pink)";
+            }
+        }
+
+        const happyText = `صحبي يصحبي 😍😂♥ خد نفس طويل ويلا اقراء يا عبودي 😂♥ <br><br> عارف، في ناس بتدخل حياتنا بنعتبرهم مجرد أرقام، وفي ناس تانية زيك بيبقوا هما "المحطة" اللي بنرتاح فيها. أنا عايزة أقولك إنك مش بس أخويا الصغير، إنت الشخص اللي بجد برتاح جداً وأنا بتكلم معاه، وبحس إن كلامنا سوا بيفصلني عن تعب الدنيا كله. <br><br> خوفك من إني أغدر بيك أو "أكرفلك" ده وجعني، لأني أبعد ما يكون عن كدة. أنا لما بختار حد وأقول عليه "أخويا"، بيبقى وعد مني إني أكون سند وأمان ليه مهما حصل. الغدر مش طبعي، والجدعنة اللي شوفتها مني دي أصلي، وعمري ما هغير أصلي مع حد شالني في عينه زيك. <br><br> عايزة أقولك كمان إني مش ناسية أبداً خوفك عليا، ولا حنيتك اللي بتبان في أبسط التفاصيل.. أو لما بكون مضايقة هو اللي خلاني أحس بجد إن عندي أخ حقيقي قلبه عليا. حنيتك دي غالية عندي أوي، وهي اللي بتخليني متمسكة بيك أكتر وأكتر. <br><br> اطمن يا بطل.. مكانتك عندي محصنة، لا خناقة بتهزها ولا سوء تفاهم بيمحيها. إنت أخويا المفضل، والاستريك اللي بينا ده مش أيام بتعدي، دي مودة بتكبر. خليك واثق إن أختك الكبيرة دايماً في ظهرك.. وعمرها ما هنمشي وتفرط في حد غالي زيك. <br><br> شكراً إنك في حياتي، وشكراً على كل مرة ريحت قلبي فيها بكلامك وخوفك عليا. إحنا مكملين، ومحطة ذكرياتنا لسه مليانة حكاوي حلوة جاية.. يديمك ليا يا عبودي ❤️🌎✨`;
 
         function revealHappyMessage() {
+            document.getElementById('sfx-click').volume = 1.0;
+            document.getElementById('sfx-click').play().catch(() => {});
+            playCinematicWhoosh(); 
+            
             const container = document.getElementById('happy-message');
             container.style.display = 'block';
             document.getElementById('show-msg-btn').style.display = 'none';
             let index = 0;
             container.innerHTML = '<span id="typing-content"></span><span class="cursor">|</span>';
             const contentSpan = document.getElementById('typing-content');
+            
             function type() {
                 if (index < happyText.length) {
                     let speed = (index > 100 && index < 200) ? 10 : 40; 
+                    
+                    if (happyText[index] !== ' ' && happyText[index] !== '<' && happyText[index] !== 'b' && happyText[index] !== 'r' && happyText[index] !== '>') {
+                        playSoftTick();
+                    }
+                    
                     if (happyText.slice(index, index + 4) === '<br>') { contentSpan.innerHTML += '<br>'; index += 4; }
                     else { contentSpan.innerHTML += happyText[index]; index++; }
                     window.scrollTo(0, document.body.scrollHeight);
@@ -319,39 +510,44 @@
                 } else { 
                     document.getElementById('end-action').style.display = 'block'; 
                     document.querySelector('.cursor').style.display = 'none';
+                    playSparkleChime(); 
                 }
             }
             type();
         }
 
-        // الوظيفة الجديدة لختم المحطة
         function finishTheJourney() {
+            document.getElementById('sfx-click').volume = 1.0;
+            document.getElementById('sfx-click').play().catch(() => {});
+            playCinematicWhoosh(); 
+            
             const exitMsg = document.getElementById('exit-msg');
             exitMsg.innerHTML = "المحطة منورة بيك يا عبودي.. ✨<br>دمت لي سنداً يا بطل.. 🌎🤝<br>المحطة لسه مكملة بينا..";
             exitMsg.style.display = "block";
             
-            // احتفال نهائي
+            playSparkleChime();
             confetti({ particleCount: 200, spread: 100, origin: { y: 0.5 } });
             
-            // فلاش أبيض وتلاشي
             document.getElementById('flash-overlay').style.opacity = "1";
             
             setTimeout(() => {
                 document.body.style.transition = "opacity 2s";
                 document.body.style.opacity = "0";
                 setTimeout(() => {
-                    location.reload(); // يقفل/يعيد تحميل الموقع
+                    location.reload(); 
                 }, 2000);
             }, 3000);
         }
 
         let idleTimer;
         function resetIdle() {
+            if (ambientGain) ambientGain.gain.linearRampToValueAtTime(0.02, audioCtx.currentTime + 1);
+            if (emotionalGain) emotionalGain.gain.linearRampToValueAtTime(0.015, audioCtx.currentTime + 1);
+
             clearTimeout(idleTimer);
             idleTimer = setTimeout(() => {
-                if(document.getElementById('main-content').style.display === 'block') {
-                    console.log("لسه معايا يا عبودي؟ ❤️");
-                }
+                if (ambientGain) ambientGain.gain.linearRampToValueAtTime(0.005, audioCtx.currentTime + 2);
+                if (emotionalGain) emotionalGain.gain.linearRampToValueAtTime(0.003, audioCtx.currentTime + 2);
             }, 30000);
         }
         window.onmousemove = resetIdle;
